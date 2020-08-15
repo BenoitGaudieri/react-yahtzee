@@ -4,6 +4,8 @@ import "./Die.css";
 class Die extends Component {
     static defaultProps = {
         numberWords: ["one", "two", "three", "four", "five", "six"],
+        // default initial value for spinning trigger
+        // val: 6,
     };
     constructor(props) {
         super(props);
@@ -17,10 +19,13 @@ class Die extends Component {
     }
 
     render() {
-        const { numberWords, locked, val, disabled } = this.props;
+        const { numberWords, locked, val, disabled, rolling } = this.props;
         let classes = `Die fas fa-dice-${numberWords[val - 1]} fa-5x `;
         if (locked) {
             classes += "Die-locked";
+        }
+        if (rolling) {
+            classes += "Die-rolling";
         }
         return (
             <i
