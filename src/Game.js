@@ -46,14 +46,17 @@ class Game extends Component {
     }
 
     toggleLocked(idx) {
-        // toggle whether idx is in locked or not
-        this.setState((st) => ({
-            locked: [
-                ...st.locked.slice(0, idx),
-                !st.locked[idx],
-                ...st.locked.slice(idx + 1),
-            ],
-        }));
+        // prevents reroll abuse when the game is over
+        if (this.state.rollsLeft > 0) {
+            // toggle whether idx is in locked or not
+            this.setState((st) => ({
+                locked: [
+                    ...st.locked.slice(0, idx),
+                    !st.locked[idx],
+                    ...st.locked.slice(idx + 1),
+                ],
+            }));
+        }
     }
 
     doScore(rulename, ruleFn) {
@@ -81,6 +84,7 @@ class Game extends Component {
                         <div className="Game-button-wrapper">
                             <button
                                 className="Game-reroll"
+                                // disable the button when every value in the array locked is true
                                 disabled={this.state.locked.every((x) => x)}
                                 onClick={this.roll}
                             >
